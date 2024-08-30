@@ -33,20 +33,20 @@
 
 <style scoped>
     .header{
-       height: 80px;
+       height: 150px;
        width: 1000;
        border: 2px solid red;
     }
     .navigator{
-      width: 15%;
-      height: 800px;
+      width: 16.7%;
+      height: 700px;
       display: inline-block;
       border: 1px blue solid;
       float: left;
     }
     .content{
       width: 83%;
-      height: 800px;
+      height: 700px;
       display: inline-block;
       border: 1px goldenrod solid;
       float: right;
