@@ -5,7 +5,7 @@
 
 <template>
   <div>
-    
+    <h1>集合</h1>
   </div>
 </template>
 

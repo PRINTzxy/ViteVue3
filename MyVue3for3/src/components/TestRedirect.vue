@@ -5,7 +5,7 @@
 
 <template>
   <div>
-    
+    <h1>声明式路由重定向</h1>
   </div>
 </template>
 

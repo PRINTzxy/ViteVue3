@@ -1,5 +1,5 @@
 {
-  "name": "myvue3for4",
+  "name": "myvue3for7",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,8 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.4.37",
-    "vue-router": "^4.4.3"
+    "vue": "^3.4.37"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.2",
