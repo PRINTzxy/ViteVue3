@@ -1,6 +1,10 @@
 <script setup>
 import { ref, reactive } from "vue";
 
+import {useRouter} from 'vue-router'
+const router = useRouter()
+import request from '../utils/request.js'
+
 // 响应式数据,保存用户输入的表单信息
 let loginUser = reactive({
   username: '',
@@ -31,6 +35,22 @@ function checkUserPwd() {
   userPwdMsg.value = 'ok';
   return true;
 }
+
+//校验所有输入框后再异步提交
+async function login() {
+  
+  try {
+    let {data} = await request.post('user/login',loginUser)
+    alert('登陆成功')
+    
+    localStorage.setItem('username',data.data.loginUser.username)
+    router.push('/showSchedule')
+  } catch (error) {
+    alert(error)
+  }
+  
+}
+
 //重置
 function reset(){
   loginUser.username = ''
@@ -58,7 +78,7 @@ function reset(){
       </tr>
       <tr class="ltr">
         <td colspan="2" class="buttonContainer">
-          <input type="button" class="btn1" value="登录">
+          <input type="button" class="btn1" value="登录" @click="login()">
           <input type="button" class="btn1" value="重置" @click="reset()">
           <router-link to="/regist">
             <button class="btn1">去注册</button>

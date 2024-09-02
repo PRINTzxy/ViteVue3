@@ -1,5 +1,12 @@
 <script setup>
   import{ ref,reactive} from 'vue'
+
+  import request from '../utils/request.js'
+  import {useRouter} from 'vue-router'
+
+  const router = useRouter()
+
+
   // 响应式数据,保存用户输入的表单信息
   let registUser =reactive({
     username:'',
@@ -13,12 +20,19 @@
   let registUserPwdMsg =ref('') //注册密码的响应信息
 
   //校验用户名
-  function checkUsername(){
+  async function checkUsername(){
     let usernameReg=/^[a-zA-Z0-9]{5,10}$/
     if(!usernameReg.test(registUser.username)){
       usernameMsg.value = '不合法'
       return false
     }
+    //异步发送请求，判断用户名是否被占用
+    let {data} = await request.post(`user/checkUsernameUsed?username=${registUser.username}`)
+    if(data.code != 200){
+      usernameMsg.value = '用户名被占用'
+      return false
+    }
+
     usernameMsg.value = 'ok'
     return true
   }
@@ -48,11 +62,35 @@
     registUserPwdMsg.value = '一致'
     return true
   }
+
+  //注册所有输入框的判断
+  async function regist() {
+    //校验所有输入框是否合法
+    let flag1 = await checkUsername()
+    let flag2 = await checkUserPwd()
+    let flag3 = await checkRegistUserPwd()
+    if (flag1 && flag2 && flag3){
+      let {data} = await request.post('user/regist',registUser)
+      if (data.code == 200){
+        alert('注册成功，快去登录')
+        router.push('/login')
+      }else{
+        alert("抱歉,用户名被抢注了")
+      }
+    }else{
+      alert("校验不通过,请再次检查数据")
+    }
+    
+  }
+
   //重置
   function reset(){
     registUser.username = ''
     registUser.userPwd = ''
     registUserPwd.value = ''
+    usernameMsg.value = ''
+    userPwdMsg.value = ''
+    registUserPwdMsg.value = ''
   }
 </script>
 
@@ -83,7 +121,7 @@
       </tr>
       <tr class="ltr">
         <td colspan="2" class="buttonContainer">
-          <input type="button" class="btn1" value="注册">
+          <input type="button" class="btn1" value="注册" @click="regist()">
           <input type="button" class="btn1" value="重置" @click="reset()">
           <router-link to="/login">
             <button class="btn1">去登录</button>

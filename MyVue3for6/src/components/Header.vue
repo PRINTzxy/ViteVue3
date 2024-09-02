@@ -1,10 +1,13 @@
 <script setup>
 import {ref} from 'vue'
+// import {useRouter} from 'vue-router'
+// const router = useRouter()
 let username = ref('')
 username.value = localStorage.getItem("username")
+
 let logout = () => {
-  //删除保存的用户信息
-  //自动跳转到登录页面
+  // localStorage.removeItem('username')
+  // router.push('/login')
 }
 </script>
 
