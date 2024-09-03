@@ -1,5 +1,8 @@
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive } from "vue"
+
+import {defineUser} from '../store/userStore.js'
+let user = defineUser()
 
 import {useRouter} from 'vue-router'
 const router = useRouter()
@@ -40,10 +43,12 @@ function checkUserPwd() {
 async function login() {
   
   try {
-    let {data} = await request.post('user/login',loginUser)
+    let {data} = await request.post('/user/login',loginUser)
     alert('登陆成功')
     
-    localStorage.setItem('username',data.data.loginUser.username)
+    user.uid = data.data.loginUser.uid
+    user.username = data.data.loginUser.username
+    // localStorage.setItem('username',data.data.loginUser.username)
     router.push('/showSchedule')
   } catch (error) {
     alert(error)

@@ -1,13 +1,22 @@
 <script setup>
 import {ref} from 'vue'
-// import {useRouter} from 'vue-router'
-// const router = useRouter()
-let username = ref('')
-username.value = localStorage.getItem("username")
+import {defineUser} from '../store/userStore.js'
+import {defineSchedule} from '../store/scheduleStore.js'
 
-let logout = () => {
-  // localStorage.removeItem('username')
-  // router.push('/login')
+let user = defineUser()
+let schedule = defineSchedule()
+
+import {useRouter} from 'vue-router'
+const router = useRouter()
+
+// let username = ref('')
+// username.value = localStorage.getItem("username")
+
+//退出登录接口
+function logout(){
+  user.$reset()
+  schedule.$reset()
+  router.push('/login')
 }
 </script>
 
@@ -16,7 +25,7 @@ let logout = () => {
   <div>
     <h1 class="ht">欢迎使用日程管理系统</h1>
     <div>
-      <div class="optionDiv" v-if="username==null || username ==''">
+      <div class="optionDiv" v-if="user.username ==''">
         <router-link to="/login">
           <button class="b1s">登录</button>
         </router-link>
@@ -25,7 +34,7 @@ let logout = () => {
         </router-link>
       </div>
       <div class="optionDiv" v-else>
-        欢迎 {{username}}
+        欢迎 {{user.username}}
         <button class="b1b" @click="logout()">退出登录</button>
         <router-link to="/showSchedule">
           <button class="b1b">查看我的日程</button>
